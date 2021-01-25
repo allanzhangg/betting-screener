@@ -10,18 +10,26 @@ oddsFormat = 'decimal'
 
 search_url = base_url + apiKey + '&sport=' + sport + '&region=' + region + '&mkt=' + mkt + '&oddsFormat=' + oddsFormat
 
-data = requests.get(search_url).json()  #works
+search_response = requests.get(search_url).json() 
 
-for match in data:
-    # todo: print match, teams
-    # ask user for preferred bookie out of possible options
-    # ask for user's percentage predictions then provide recommendation on bet
-    # if recommended, then store team name + its associated odds on array/list (watch out for draw case)
+match_list = search_response['data']
 
-    # continue until no more matches left to screen, then output all recommendations based on user's predictions
-    
-    #final step: add a GUI via tkinter
+matchLeagues = [match['sport_nice'] for match in match_list]
+matches = [match['teams'] for match in match_list]
+matchBookies = [match['sites'] for match in match_list]
 
+matchOptions = []
+matchOdds = []
+
+for match in matchBookies:
+    bookieOptions = [bookie['site_nice'] for bookie in match]
+    bookieOdds = [bookie['odds'] for bookie in match]
+    matchOptions.append(bookieOptions)
+    matchOdds.append(bookieOdds)
+
+# all data obtained
+# now get user input & compare & make recommendations
+# final step: GUI via tkinter
 
 
 def convertToOdds(predictedPercentage):
@@ -69,5 +77,7 @@ def recommendation(strengthScore):
         print('Based on your predictions, this bet is weak.')
 
     
+
+
 
 
