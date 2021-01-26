@@ -4,15 +4,15 @@ Utilize Python in addition to The Odds API to help the user determine viable bet
 
 ### finished
 
-retrieving data from API
-most logic including basic recommendation algorithm
+retrieving data from API,
+most logic including basic recommendation algorithm,
 output recommendations based on user predictions
 
 ### to-do
 
-giving the user to skip matches & end session prematurely
-handling error cases
-adaptability to multiple sports (only soccer done so far --> no draws in basketball)
+giving the user to skip matches & end session prematurely,
+handling error cases,
+adaptability to multiple sports (only soccer done so far --> no draws in basketball),
 GUI (tkinter) output
 
 
