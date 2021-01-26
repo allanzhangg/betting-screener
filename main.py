@@ -21,6 +21,9 @@ matchBookies = [match['sites'] for match in match_list]
 matchOptions = []
 matchOdds = []
 
+recommendedTeams = []
+recommendedOdds = []
+recommendedResults = []
 
 for match in matchBookies:
     bookieOptions = [bookie['site_nice'] for bookie in match]
@@ -93,10 +96,18 @@ def predictionStrength (predictedPercentage, bookieOdds):
 
     return totalStrength
 
+def recommend(teams, odds, result):
+    recommendedTeams.append(teams)
+    recommendedOdds.append(odds)
+    recommendedResults.append(result)
+
+
 def evaluation(strengthScore):
     betLevel = ""
-    if strengthScore >= 8.5:
+    if strengthScore >= 9:
         betLevel = 'very strong'
+    elif strengthScore >= 8:
+        betLevel = 'strong'
     elif strengthScore >= 7:
         betLevel = 'decent'
     elif strengthScore >= 5.5:
@@ -107,6 +118,7 @@ def evaluation(strengthScore):
 
     
 currentMatch = 0
+
 while currentMatch < len(matches):
     print('League: ' + matchLeagues[currentMatch])
     print('Match: ' + matches[currentMatch][0] + ' vs ' + matches[currentMatch][1])
@@ -124,14 +136,20 @@ while currentMatch < len(matches):
     
     homePrediction = input("What is your predicted percentage of a " + matches[currentMatch][0] + " win?\n")
     homeStrength = predictionStrength(homePrediction, homeOdds)
+    if homeStrength >= 8:
+        recommend(matches[currentMatch], homeOdds, "h")
     homeStrength = round(homeStrength, 2)
 
     drawPrediction = input("What is your predicted percentage of a draw?\n")
     drawStrength = predictionStrength(drawPrediction, drawOdds)
+    if drawStrength >= 8:
+        recommend(matches[currentMatch], drawOdds, "d")
     drawStrength = round(drawStrength, 2)
 
     awayPrediction = input("What is your predicted percentage of a " + matches[currentMatch][1] + " win?\n")
     awayStrength = predictionStrength(awayPrediction, awayOdds)
+    if awayStrength >= 8:
+        recommend(matches[currentMatch], awayOdds, "a")
     awayStrength = round(awayStrength, 2)
 
     print("")
@@ -145,11 +163,25 @@ while currentMatch < len(matches):
     print("")
 
 
+if len(recommendedResults) > 0:
+    print("Based on your predictions, these bets are recommended:")
+    currentRecommendation = 0
+    while currentRecommendation < len(recommendedResults):
+        if recommendedResults[currentRecommendation] == 'h':
+            print(recommendedTeams[currentRecommendation][0] + " defeats " + recommendedTeams[currentRecommendation][1] + " @ " + str(recommendedOdds[currentRecommendation]))
+        elif recommendedResults[currentRecommendation] == 'a':
+            print(recommendedTeams[currentRecommendation][1] + " defeats " + recommendedTeams[currentRecommendation][0] + " @ " + str(recommendedOdds[currentRecommendation]))
+        else:
+            print(recommendedTeams[currentRecommendation][0] + " draws " + recommendedTeams[currentRecommendation][1] + " @ " + str(recommendedOdds[currentRecommendation]))
+        currentRecommendation += 1
+else:
+    print("Based on your predictions, no bets were recommendable.")
 
-# to do: allow user to go back & forth, exit app quickly
-# error cases
-# store strong bets in a list & output at end
-# add a GUI via tkinter
+
+
+
+
+
 
 
 
