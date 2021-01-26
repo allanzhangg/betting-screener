@@ -1,3 +1,4 @@
+
 import requests, json, string
 
 base_url = 'https://api.the-odds-api.com/v3/odds/?apiKey='
@@ -66,33 +67,33 @@ def convertToOdds(predictedPercentage):
 
 
 def predictionStrength (predictedPercentage, bookieOdds):
-    totalStrength = 0
+    totalStrength = 0.0
 
-    predictedPercentage = int(predictedPercentage)
+    predictedPercentage = float(predictedPercentage)
     predictedOdds = convertToOdds(predictedPercentage)
 
-    bookieOdds = int(bookieOdds)
+    bookieOdds = float(bookieOdds)
     improvement = bookieOdds / predictedOdds
 
     if improvement >= 2:
-        totalStrength += 5
+        totalStrength += 5.0
     elif improvement >= 1.7:
         totalStrength += 4.5
     elif improvement >= 1.5:
-        totalStrength += 4
+        totalStrength += 4.0
     elif improvement >= 1.3:
         totalStrength += 3.5
     elif improvement >= 1.15:
-        totalStrength += 3
+        totalStrength += 3.0
     elif improvement >= 1.05:
         totalStrength += 2.5
     elif improvement >= 1.001:
-        totalStrength += 2
+        totalStrength += 2.0
     else:
-        totalStrength += 0
+        totalStrength += 0.0
 
     oddsScore = ((predictedPercentage / ((100 + predictedPercentage)/2)) / (10*2)) * 100
-    totalStrength += oddsScore
+    totalStrength += float(oddsScore)
 
     return totalStrength
 
@@ -104,11 +105,11 @@ def recommend(teams, odds, result):
 
 def evaluation(strengthScore):
     betLevel = ""
-    if strengthScore >= 9:
+    if strengthScore >= 9.0:
         betLevel = 'very strong'
-    elif strengthScore >= 8:
+    elif strengthScore >= 8.0:
         betLevel = 'strong'
-    elif strengthScore >= 7:
+    elif strengthScore >= 7.0:
         betLevel = 'decent'
     elif strengthScore >= 5.5:
         betLevel = 'adequate'
@@ -136,19 +137,19 @@ while currentMatch < len(matches):
     
     homePrediction = input("What is your predicted percentage of a " + matches[currentMatch][0] + " win?\n")
     homeStrength = predictionStrength(homePrediction, homeOdds)
-    if homeStrength >= 8:
+    if homeStrength >= 8.0:
         recommend(matches[currentMatch], homeOdds, "h")
     homeStrength = round(homeStrength, 2)
 
     drawPrediction = input("What is your predicted percentage of a draw?\n")
     drawStrength = predictionStrength(drawPrediction, drawOdds)
-    if drawStrength >= 8:
+    if drawStrength >= 8.0:
         recommend(matches[currentMatch], drawOdds, "d")
     drawStrength = round(drawStrength, 2)
 
     awayPrediction = input("What is your predicted percentage of a " + matches[currentMatch][1] + " win?\n")
     awayStrength = predictionStrength(awayPrediction, awayOdds)
-    if awayStrength >= 8:
+    if awayStrength >= 8.0:
         recommend(matches[currentMatch], awayOdds, "a")
     awayStrength = round(awayStrength, 2)
 
@@ -176,9 +177,6 @@ if len(recommendedResults) > 0:
         currentRecommendation += 1
 else:
     print("Based on your predictions, no bets were recommendable.")
-
-
-
 
 
 
